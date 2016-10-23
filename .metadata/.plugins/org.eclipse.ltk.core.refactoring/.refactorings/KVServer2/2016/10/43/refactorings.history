@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy source folder &apos;src&apos; to &apos;KVServer2&apos;&#x0A;- Original project: &apos;KVServer2&apos;&#x0A;- Destination element: &apos;KVServer2&apos;&#x0A;- Original element: &apos;KVServer2/src&apos;" description="Copy source folder" destination="=KVServer2" element1="/src" flags="6" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyRoots" roots="1" stamp="1476713238393" version="1.0"/>
+</session>

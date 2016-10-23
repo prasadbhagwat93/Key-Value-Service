@@ -1,0 +1,64 @@
+package kvstore;
+import org.apache.http.util.Args;
+import org.apache.thrift.TException;
+import org.apache.thrift.server.TServer;
+import org.apache.thrift.server.TSimpleServer;
+import org.apache.thrift.transport.TServerSocket;
+import org.apache.thrift.transport.TServerTransport;
+
+import kvstore.KVStore.Iface;
+
+import java.util.*;
+public class Kvimplement implements KVStore.Iface{
+	
+	public HashMap<String, String> map = new HashMap<String, String>();
+	@Override
+	public Result kvset(String key, String value) throws org.apache.thrift.TException{
+		Result res = null;
+		
+		System.out.println("in set");
+		try{
+			System.out.println("----->1");
+		map.put(key, value);
+		ErrorCode e = ErrorCode.findByValue(0);
+		res.error =e;
+		res.value = "Value";
+		res.errortext = "Human Readable text";
+		}
+		catch(Exception e){
+			System.out.println("----->");
+		}
+		return null;
+	}
+	@Override
+	public Result kvget(String key) throws org.apache.thrift.TException{
+		System.out.println("in get");
+		System.out.println(map.get(key));
+		return null;
+	}
+	@Override
+	public Result kvdelete(String key) throws org.apache.thrift.TException{
+		System.out.println("in delete");
+		map.remove(key);
+		return null;
+	}
+	/*
+	public static void main(String[] args){
+		try{
+			
+			Kvimplement implement =  new Kvimplement();
+			TServerTransport serverTransport = new TServerSocket(9090);
+		      TServer server = new TSimpleServer(new Args(serverTransport).processor(process));
+
+		      System.out.println("Starting the simple server...");
+		      server.serve();
+			 
+		}
+		catch(Exception e){
+			
+		}
+	}
+	*/
+	
+}
+

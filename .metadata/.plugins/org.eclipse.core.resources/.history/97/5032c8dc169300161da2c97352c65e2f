@@ -1,0 +1,54 @@
+package kvstore;
+import org.apache.thrift.server.TServer;
+import org.apache.thrift.server.TServer.Args;
+import org.apache.thrift.server.TSimpleServer;
+import org.apache.thrift.transport.TServerSocket;
+import org.apache.thrift.transport.TServerTransport;
+
+import kvstore.KVStore.Iface;
+
+public class kvserver extends Thread{
+	
+	public static Kvimplement kvimp ;
+	public static KVStore.Processor process;
+
+public static void main(String [] args) {
+	
+	
+	// process = new KVStore.Processor((Iface) kvimp);
+	
+	
+    try {
+    	kvimp = new Kvimplement();
+    	process = new KVStore.Processor(kvimp);
+    	
+    	Thread startServer = new Thread(){
+    		public void run(){
+    			startServer(process);
+    		}
+    	};
+    	startServer.setDaemon(true);
+    	new Thread(startServer).start();
+    }
+    catch(Exception e){
+    	e.printStackTrace();
+    }
+	
+}
+public static void startServer(KVStore.Processor processor){
+	try {
+	      TServerTransport serverTransport = new TServerSocket(9090);
+	      TServer server = new TSimpleServer(new Args(serverTransport).processor(process));
+
+	      System.out.println("Starting the simple server...");
+	      server.serve();
+	      System.out.println("Starting the simple server.x.. " + server.isServing());
+	    } catch (Exception e) {
+	      e.printStackTrace();
+	    }
+	  }
+
+
+}
+
+
