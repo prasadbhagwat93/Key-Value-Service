@@ -5,57 +5,62 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 
-public class kvclient {
+public class kvclient{
+	static KVStore.Client  client;
 	 public static void main(String [] args) {
 		 try{
-			 if(args.length >1){
 			TTransport transport;
-			String[] token = args[1].split(":");
-		    transport = new TSocket(token[0], Integer.parseInt (token[1])); //Conecting to port
+			//String[] token = args[1].split(":");
+		    transport = new TSocket("localhost",9090); //Conecting to port
 		    transport.open();
 		    TProtocol protocol = new  TBinaryProtocol(transport); 
-		    KVStore.Client client = new  KVStore.Client(protocol);
+		    client = new  KVStore.Client(protocol);
 		    String request = "";
-		    if(args.length >3){
-		    	request = args[2];
-			    execute(client,args);
-			    transport.close();
-		    }
-			 }
-		    else{
-		    	System.out.println("Not a good command");
-		    }
-		    
+		   /* RandomRequestGenerator r = new RandomRequestGenerator("Thread one ");
+		    r.start();
+		    RandomRequestGenerator r1 = new RandomRequestGenerator("Thread two");
+		    r1.start();*/
+		    Thread t1 = new Thread( new RandomRequestGenerator("Th1111"));
+		    t1.start();
+		    Thread t2 = new Thread( new RandomRequestGenerator("Th2222"));
+		    t2.start();
+		    //Thread.sleep(6000);
+		    System.out.println("ALL THREADS HAVE STARTED");
+		    transport.close();
+		    t1.join();
+			t2.join();
 		 }
 		 catch(Exception e){
-			 
+			 	e.printStackTrace();
 		 }
 	 }
-	 public static void execute(KVStore.Client client, String args[]) throws TException{
+	 /*
+	 public static void execute(String operation) throws TException{
 		 Result res = null;
-		 switch (args[2]) { 		//select operation
+		 switch (operation) { 		//select operation
 		 
 		 case "-set" :
-			  res = client.kvset(args[3],args[4]);
+			  res = client.kvset("a","b");
 			 System.out.println("Exitcode "+res.error.getValue());
-			 System.exit(res.error.getValue());
+			 //System.exit(res.error.getValue());
 			 break;
 		 case "-get" :
-			 res = client.kvget(args[3]);
+			 System.out.println(" ---> ");
+			 res = client.kvget("a");
 			 if(res.error.getValue() == 0){
 				 System.out.println("Value is "+ res.value);
 				 System.out.println("Exitcode "+res.error.getValue());
-				 System.exit(res.error.getValue());
+				// System.exit(res.error.getValue());
 			 }
 			 else{
 				 System.err.println(res.errortext);
 				 System.out.println("Exitcode "+res.error.getValue());
-				 System.exit(res.error.getValue());
+				 //System.exit(res.error.getValue());
 			 }
 			 
 			 break;
 		 case "-delete" :
-			 res = client.kvdelete(args[3]);
+			 res = client.kvdelete("b");
 			 if(res.error.getValue() == 0){
 				 System.out.println("Exitcode "+res.error.getValue());
 				 System.exit(res.error.getValue());
@@ -72,6 +77,6 @@ public class kvclient {
 		 
 		 }
 		 
-	 }
-
+	 }*/
+	
 }

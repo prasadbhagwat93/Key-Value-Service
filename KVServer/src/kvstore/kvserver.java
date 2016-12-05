@@ -1,7 +1,9 @@
 package kvstore;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TServer.Args;
-import org.apache.thrift.server.TSimpleServer;
+import org.apache.thrift.server.TThreadPoolServer;
+import org.apache.thrift.server.TThreadPoolServer;
+import org.apache.thrift.server.TThreadedSelectorServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 
@@ -15,30 +17,30 @@ public class kvserver extends Thread{
 
 public static void main(String [] args) {
 	
-	if(args.length ==1){
+	if(true){
 		
-	port = Integer.parseInt(args[0]);
-	// process = new KVStore.Processor((Iface) kvimp);
-	
-	Thread procThread=null;
-    try {
-    	kvimp = new Kvimplement();
-    	process = new KVStore.Processor(kvimp);
-    	
-    	procThread = new Thread(){
-    		public void run(){
-    			startServer(process);
-    		}
-    	};
-    	//startServer.setDaemon(true);
-    	//new Thread(startServer).start();
-    	 	procThread.start();
-    	    procThread.join();
-    }
-    catch(Exception e){
-    	e.printStackTrace();
-    	System.out.println("Failed to start server, check command maybe?");
-    }
+		port = 9090;
+		// process = new KVStore.Processor((Iface) kvimp);
+		
+		Thread procThread=null;
+	    try {
+	    	kvimp = new Kvimplement();
+	    	process = new KVStore.Processor(kvimp);
+	    	
+	    	procThread = new Thread(){
+	    		public void run(){
+	    			startServer(process);
+	    		}
+	    	};
+	    	//startServer.setDaemon(true);
+	    	//new Thread(startServer).start();
+	    	 	procThread.start();
+	    	    procThread.join();
+	    }
+	    catch(Exception e){
+	    	e.printStackTrace();
+	    	System.out.println("Failed to start server, check command maybe?");
+	    }
 	}
 	else{
 		System.out.println("Failed to start server, check command maybe?");
@@ -46,15 +48,16 @@ public static void main(String [] args) {
    
 }
 public static void startServer(KVStore.Processor processor){
-	try {
-	      TServerTransport serverTransport = new TServerSocket(port);
-	      TServer server = new TSimpleServer(new Args(serverTransport).processor(process));
-	      System.out.println("Starting the server...");
-	      server.serve();
-	    } catch (Exception e) {
-	      e.printStackTrace();
-	    }
-	  }
+	 try {
+         TServerTransport serverTransport = new TServerSocket(9090);
+         TServer server = new TThreadPoolServer(new
+           TThreadPoolServer.Args(serverTransport).processor(processor));
+         System.out.println("Starting the multi thread server...");
+         server.serve();
+     } catch (Exception e) {
+         e.printStackTrace();
+     }
+}
 }
 
 

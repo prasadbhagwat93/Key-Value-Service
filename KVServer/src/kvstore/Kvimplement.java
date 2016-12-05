@@ -12,10 +12,18 @@ import java.util.*;
 public class Kvimplement implements KVStore.Iface{
 	
 	@SuppressWarnings("unchecked")
-	public HashMap<String, String> hashMap = (new HashMap());
-	Map map = Collections.synchronizedMap(hashMap);
+	public HashMap<String, String> map = (new HashMap());
+	//Map map = Collections.synchronizedMap(hashMap);
 	//Map<String,String> map = Collections.synchronizedMap(hmap);
 	//@SuppressWarnings("null")
+	{
+	try {
+		kvset("a","b");
+	} catch (TException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	}
 	@Override
 	public Result kvset(String key, String value) throws org.apache.thrift.TException{
 		Result res = new Result();
