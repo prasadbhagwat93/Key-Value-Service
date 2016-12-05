@@ -1,0 +1,16 @@
+package kvstore;
+import java.util.*;
+import java.lang.*;;
+public class RandomRequestGenerator implements Runnable  {
+	String threadName;
+	RandomRequestGenerator(String name){
+		threadName = name;
+	}
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

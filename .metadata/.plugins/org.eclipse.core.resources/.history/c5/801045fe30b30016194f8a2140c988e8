@@ -1,0 +1,13 @@
+package kvstore;
+
+public class SequenceServer implements Runnable{
+	
+	int counter = 0;
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+}

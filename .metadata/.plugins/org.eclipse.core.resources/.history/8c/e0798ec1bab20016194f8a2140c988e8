@@ -1,0 +1,36 @@
+package kvstore;
+import java.util.*;
+
+import org.apache.thrift.TException;
+
+import java.lang.*;;
+public class RandomRequestGenerator implements Runnable  {
+	String threadName;
+	Thread t;
+	KVStore.Client client;
+	RandomRequestGenerator(String name, KVStore.Client para ){
+		threadName = name;
+		client = para;
+	}
+	
+	@Override
+	public void run() {
+		
+		System.out.println("this thread is " +threadName);
+		try {
+			 
+			kvclient.execute("-set",client);
+			kvclient.execute("-get",client);
+		} catch (TException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	public void start(){
+		
+		System.out.println(" Starting " + threadName);
+		t = new Thread(this,threadName);
+		t.start();
+	}
+
+}

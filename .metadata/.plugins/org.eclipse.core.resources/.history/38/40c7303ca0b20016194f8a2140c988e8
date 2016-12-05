@@ -1,0 +1,74 @@
+package kvstore;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
+
+public class kvclient {
+	 public static void main(String [] args) {
+		 try{
+			TTransport transport;
+			String[] token = args[1].split(":");
+		    transport = new TSocket(token[0], Integer.parseInt (token[1])); //Conecting to port
+		    transport.open();
+		    TProtocol protocol = new  TBinaryProtocol(transport); 
+		    KVStore.Client client = new  KVStore.Client(protocol);
+		    String request = "";
+		    if(args.length >3){
+		    	request = args[2];
+			    execute(client,args);
+			    transport.close();
+		    
+			 }
+		   
+		    
+		 }
+		 catch(Exception e){
+			 
+		 }
+	 }
+	 public static void execute(KVStore.Client client, String args[]) throws TException{
+		 Result res = null;
+		 switch (args[2]) { 		//select operation
+		 
+		 case "-set" :
+			  res = client.kvset(args[3],args[4]);
+			 System.out.println("Exitcode "+res.error.getValue());
+			 System.exit(res.error.getValue());
+			 break;
+		 case "-get" :
+			 res = client.kvget(args[3]);
+			 if(res.error.getValue() == 0){
+				 System.out.println("Value is "+ res.value);
+				 System.out.println("Exitcode "+res.error.getValue());
+				 System.exit(res.error.getValue());
+			 }
+			 else{
+				 System.err.println(res.errortext);
+				 System.out.println("Exitcode "+res.error.getValue());
+				 System.exit(res.error.getValue());
+			 }
+			 
+			 break;
+		 case "-delete" :
+			 res = client.kvdelete(args[3]);
+			 if(res.error.getValue() == 0){
+				 System.out.println("Exitcode "+res.error.getValue());
+				 System.exit(res.error.getValue());
+			 }
+			 else{
+				 System.err.println(res.errortext);
+				 System.out.println("Exitcode "+res.error.getValue());
+				 System.exit(res.error.getValue());
+			 }
+			 break;
+			 
+		default: 
+			System.out.println("Some error in command");
+		 
+		 }
+		 
+	 }
+
+}

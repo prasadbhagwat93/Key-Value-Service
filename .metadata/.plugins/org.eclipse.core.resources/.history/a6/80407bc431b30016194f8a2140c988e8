@@ -1,0 +1,11 @@
+package kvstore;
+
+public class SequenceServer{
+	
+	int counter = 0;
+	
+	synchronized int sequenceNumber(){
+		counter++;
+		return counter;
+	}
+}

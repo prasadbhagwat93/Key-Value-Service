@@ -1,0 +1,48 @@
+package kvstore;
+import java.util.*;
+
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
+
+import java.lang.*;;
+public class RandomRequestGenerator implements Runnable  {
+	String threadName;
+	Thread t;
+	KVStore.Client client;
+	
+	 
+	//String[] token = args[1].split(":");
+	TTransport transport = new TSocket("localhost",9090); //Conecting to port
+	transport.open();
+    TProtocol protocol = new  TBinaryProtocol(transport); 
+    client = new  KVStore.Client(protocol);
+	
+	RandomRequestGenerator(String name ){
+		threadName = name;
+		//client = para;
+	}
+	
+	@Override
+	public void run() {
+		
+		System.out.println("this thread is " +threadName);
+		try {
+			 
+			kvclient.execute("-set");
+			kvclient.execute("-get");
+		} catch (TException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	public void start(){
+		
+		System.out.println(" Starting " + threadName);
+		t = new Thread(this,threadName);
+		t.start();
+	}
+
+}
