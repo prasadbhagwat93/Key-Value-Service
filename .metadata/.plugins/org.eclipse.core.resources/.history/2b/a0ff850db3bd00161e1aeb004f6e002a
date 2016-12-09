@@ -1,0 +1,13 @@
+package kvstore;
+
+public class EntryNumberProvider {
+	
+		
+		static int counter = 0;
+		
+		static synchronized int getNext(){
+			counter++;
+			return counter;
+		}
+	
+}

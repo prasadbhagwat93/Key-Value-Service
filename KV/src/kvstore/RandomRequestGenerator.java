@@ -60,12 +60,13 @@ public class RandomRequestGenerator implements Runnable  {
 			int a=r.nextInt(2-1+1) + 1;
 		
 			if(a ==1){
-					
+				e.operation =1;	
 				execute(client,"-set");
 			}
 			else{
+				e.operation = 0;
+				Result r = execute(client,"-get");
 				
-				execute(client,"-get");
 			}
 		} catch (TException e1) {
 			// TODO Auto-generated catch block

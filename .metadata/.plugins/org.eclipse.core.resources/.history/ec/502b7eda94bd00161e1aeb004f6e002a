@@ -1,0 +1,32 @@
+package kvstore;
+import java.util.*;
+public class CheckCycle
+{
+	public boolean hasCycle() {
+		  boolean[] visited = new boolean[n];
+		  boolean[] inStack = new boolean[n];
+		  for (int i = 0; i < n; i++) {
+		   if (!visited[i]) {
+		    if (dfsCycle(i, visited, inStack)) {
+		     return true;
+		    }
+		   }
+		  }
+		  return false;
+		 }
+		 
+		 private boolean dfsCycle(int start, boolean[] visited, boolean[] inStack) {
+		  visited[start] = true;
+		  inStack[start] = true;
+		  for (int next : adjList.get(start)) {
+		   
+		   if (!visited[start] && dfsCycle(next, visited, inStack)) {
+		    return true;
+		   } else if (inStack[next]) {
+		    return true;
+		   }
+		  }
+		  inStack[start] = false;
+		  return false;
+		 }
+}

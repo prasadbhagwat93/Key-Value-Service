@@ -29,6 +29,8 @@ public class kvclient{
 		    transport.close();
 		    t1.join();
 			t2.join();
+			ConsistencyValidator validator = new ConsistencyValidator();
+			validator.call();
 		 }
 		 catch(Exception e){
 			 	e.printStackTrace();
