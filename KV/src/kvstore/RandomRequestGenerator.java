@@ -50,23 +50,26 @@ public class RandomRequestGenerator implements Runnable  {
 	}
 	
 	public void helper() throws IOException{
-		int value = 0;
+		int value = 0;	int tokenNumber;
 		LogEntry e = new LogEntry();
 		Result res = null;
 		 value = SequenceServer.getNext();
-	
-		e.start = value;
+		 e.start = value;
+		 tokenNumber = EntryNumberProvider.getNext();
+		 e.entryNumber = tokenNumber;
 		try {
 			int a=r.nextInt(2-1+1) + 1;
 		
 			if(a ==1){
 				e.operation =1;	
-				execute(client,"-set");
+				e.value = Integer.toString(tokenNumber);
+				execute(client,"-set","1",Integer.toString(tokenNumber));
+				
 			}
 			else{
 				e.operation = 0;
-				Result r = execute(client,"-get");
-				
+				Result r = execute(client,"-get","1","");
+				e.value = r.value;
 			}
 		} catch (TException e1) {
 			// TODO Auto-generated catch block
@@ -74,21 +77,22 @@ public class RandomRequestGenerator implements Runnable  {
 		}
 		
 		value = SequenceServer.getNext();
-		
 		e.end = value;
+		EntryNumberProvider.addToLogList(e);
+		printEntry(e);
 	}
 	
-	public  Result execute(KVStore.Client client,String operation) throws TException{
+	public  Result execute(KVStore.Client client,String operation,String key,String value) throws TException{
 		 Result res = null;
 		 switch (operation) { 		//select operation
 		 
 		 case "-set" :
-			System.out.println("-set: About to exec client.kvset for " + threadName);
-			  res = client.kvset("a","b");
+			//System.out.println("-set: About to exec client.kvset for " + threadName);
+			  res = client.kvset(key,value);
 			return res;
 		case "-get" :
-			 res = client.kvget("a");
-			 System.out.println("-get: Value is "+ res.value + " for " + threadName);
+			 res = client.kvget(key);
+			// System.out.println("-get: Value is "+ res.value + " for " + threadName);
 			 if(res.error.getValue() == 0){
 				// System.out.println("-get: Value is "+ res.value + " for " + threadName);
 				// System.out.println("Exitcode "+res.error.getValue());
@@ -121,5 +125,8 @@ public class RandomRequestGenerator implements Runnable  {
 		 }
 		 
 	 }
+	static void printEntry(LogEntry e){
+		   System.out.println("start"+e.start+ " end"+ e.end+" operation"+e.operation + " Token Number "+e.entryNumber + " Value"+e.value);
+	   }
 
 }

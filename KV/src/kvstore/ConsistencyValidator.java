@@ -1,27 +1,30 @@
 package kvstore;
 import java.util.*;
 public class ConsistencyValidator {
-	private static List<LogEntry>[] points = new LinkedList[4];
-	static List<LogEntry> list = new LinkedList<LogEntry>();
+	private static List<LogEntry>[] points;
+	static List<LogEntry> list ;
+	@SuppressWarnings("unchecked")
 	public ConsistencyValidator(){
-		LogEntry e = new LogEntry();
+		/*LogEntry e = new LogEntry();
 		LogEntry e1 = new LogEntry();
 		LogEntry e2 = new LogEntry();
 		LogEntry e3 = new LogEntry();
-		e.start =1; e.end = 2; e.operation =1; e.value =0;	e.entryNumber=0;
-		e1.start = 3; e1.end =8; e1.operation =1; e1.value = 1; e1.entryNumber=1;
-		e2.start = 4; e2.end = 5; e2.operation =0; e2.value = 0; e2.entryNumber =2;
-		e3.start =6; e3.end = 7; e3.operation =0; e3.value = 1;	e3.entryNumber =3;
+		e.start =1; e.end = 2; e.operation =1; e.value =Integer.toString(0);	e.entryNumber=0;
+		e1.start = 3; e1.end =8; e1.operation =1; e1.value = Integer.toString(1); e1.entryNumber=1;
+		e2.start = 4; e2.end = 5; e2.operation =0; e2.value = Integer.toString(1); e2.entryNumber =2;
+		e3.start =6; e3.end = 7; e3.operation =0; e3.value = Integer.toString(0);	e3.entryNumber =3;
 		
 
 		list.add(e);
 		list.add(e1);
 		list.add(e2);
 		list.add(e3);
-
+*/		list = EntryNumberProvider.getLogList();
+		points	= new LinkedList[list.size()];
 		
 	}
 	public static void call(){
+		
 		drawGraph(list);
 	}
 
@@ -55,7 +58,7 @@ public class ConsistencyValidator {
 			LogEntry e = list.get(i);
 			for(int j =0;j<list.size();j++){
 				if(i!=j && e.operation ==1){
-					if(list.get(j).operation == 0 && e.value == list.get(j).value){
+					if(list.get(j).operation == 0 && e.value.equals(list.get(j).value)){
 						if(!points[i].contains(list.get(j))){
 							points[i].add(list.get(j));
 						}
@@ -70,10 +73,10 @@ public class ConsistencyValidator {
 			LogEntry e = list.get(i);
 			if(e.operation == 1){
 			for(int j =0;j<list.size();j++){
-				if(i!=j && e.value!=list.get(j).value && e.operation!=list.get(j).operation){		//found a non dictating read
+				if(i!=j && !e.value.equals(list.get(j).value) && e.operation!=list.get(j).operation){		//found a non dictating read
 					if(isReachable(e,list.get(j))){
 						for(int k=0;k<list.size();k++){
-							if(list.get(k).value == list.get(j).value && list.get(k).operation == e.operation){
+							if(list.get(k).value.equals(list.get(j).value) && list.get(k).operation == e.operation){
 								if(!points[i].contains(list.get(k))){
 									points[i].add(list.get(k));
 								}
@@ -92,7 +95,7 @@ public class ConsistencyValidator {
  
         // Mark all the vertices as not entryNumber(By default set
         // as false)
-        boolean entryNumber[] = new boolean[4];
+        boolean entryNumber[] = new boolean[list.size()];
  
         // Create a queue for BFS
         LinkedList<LogEntry> queue = new LinkedList<LogEntry>();
@@ -138,14 +141,14 @@ public class ConsistencyValidator {
 
    static void CheckGraphHasCycle(List<LogEntry>[] points){
 	   int adj[][] = new int[points.length+1][points.length+1];
-	   
+	   System.out.println("adj matrix size is "+adj.length);
 	   
 	   List<Integer> dls;
 	   List<int[]> list = new LinkedList<int[]>();
        
 	   for(int i =0;i<points.length;i++){
 		   System.out.println("test size "+points[i].size());
-		
+		   
 		   for(int j =0;j<points[i].size();j++){
 			   
 			   
@@ -167,4 +170,6 @@ public class ConsistencyValidator {
 	   check.dfs(adj,1);
 	 //System.out.println(damn);
    }
+   
+   
 }

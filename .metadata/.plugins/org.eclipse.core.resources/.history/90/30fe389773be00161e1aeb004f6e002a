@@ -1,0 +1,24 @@
+package kvstore;
+
+import java.util.*;
+
+public class EntryNumberProvider {
+	
+	public static List<LogEntry> loglist = new LinkedList<LogEntry>();
+		
+	
+		static int counter = 0;
+		
+		static synchronized int getNext(){
+			counter++;
+			return counter;
+		}
+		
+		static synchronized void addToLogList(LogEntry e){
+			loglist.add(e);
+		}
+		
+		static List<LogEntry>  getLogList(){
+			return loglist;
+		}
+}
