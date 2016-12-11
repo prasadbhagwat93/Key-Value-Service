@@ -2,8 +2,6 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="org.apache.thrift.transport.TTransport"/>
 <fullyQualifiedTypeName name="org.apache.thrift.transport.TSocket"/>
-<fullyQualifiedTypeName name="org.apache.thrift.protocol.TBinaryProtocol"/>
-<fullyQualifiedTypeName name="org.apache.thrift.server.TThreadPoolServer"/>
 <fullyQualifiedTypeName name="org.apache.thrift.transport.TTransportException"/>
 <fullyQualifiedTypeName name="org.apache.thrift.transport.TServerTransport"/>
 <fullyQualifiedTypeName name="org.apache.thrift.transport.TServerSocket"/>
@@ -11,4 +9,17 @@
 <fullyQualifiedTypeName name="org.apache.thrift.server.TServer"/>
 <fullyQualifiedTypeName name="org.apache.thrift.server.TSimpleServer"/>
 <fullyQualifiedTypeName name="kvstore.KVStore.Iface"/>
+<fullyQualifiedTypeName name="java.util.concurrent.ExecutorService"/>
+<fullyQualifiedTypeName name="java.util.concurrent.Executors"/>
+<fullyQualifiedTypeName name="org.apache.thrift.server.TThreadedSelectorServer"/>
+<fullyQualifiedTypeName name="org.apache.thrift.server.TThreadPoolServer"/>
+<fullyQualifiedTypeName name="kvstore.KVStore.Client.Factory"/>
+<fullyQualifiedTypeName name="org.apache.thrift.protocol.TBinaryProtocol"/>
+<fullyQualifiedTypeName name="org.apache.thrift.TProcessor"/>
+<fullyQualifiedTypeName name="kvstore.ConsistencyValidator"/>
+<fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="kvstore.LogEntry"/>
+<fullyQualifiedTypeName name="kvstore.EntryNumberProvider"/>
+<fullyQualifiedTypeName name="kvstore.RandomRequestGenerator"/>
+<fullyQualifiedTypeName name="kvstore.SequenceServer"/>
 </qualifiedTypeNameHistroy>

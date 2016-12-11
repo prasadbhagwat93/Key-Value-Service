@@ -8,7 +8,7 @@ public class EntryNumberProvider {
 		
 	
 		static int counter = -1;
-		
+		static int value = 0;
 		static synchronized int getNext(){
 			counter++;
 			return counter;
@@ -21,4 +21,10 @@ public class EntryNumberProvider {
 		static List<LogEntry>  getLogList(){
 			return loglist;
 		}
+		
+		static synchronized int getNextValue(){
+			value++;
+			return value;
+		}
+		
 }

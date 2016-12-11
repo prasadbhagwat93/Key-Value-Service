@@ -167,7 +167,9 @@ public class ConsistencyValidator {
 	  
 	   //System.out.println("---> "+list.get(4)[1]);
 	   CheckCycle check = new CheckCycle();
-	   check.dfs(adj,1);
+	   for(int i =1;i<=points.length;i++){
+	   check.dfs(adj,i);
+	   }
 	 //System.out.println(damn);
    }
    

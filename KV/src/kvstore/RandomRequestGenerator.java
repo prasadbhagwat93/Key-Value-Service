@@ -56,14 +56,17 @@ public class RandomRequestGenerator implements Runnable  {
 		 value = SequenceServer.getNext();
 		 e.start = value;
 		 tokenNumber = EntryNumberProvider.getNext();
+		 
 		 e.entryNumber = tokenNumber;
+		 
 		try {
-			int a=r.nextInt(2-1+1) + 1;
+			//int a=r.nextInt(2-1+1) + 1;
 		
-			if(a ==1){
+			if(threadName.equals("Th1")){
+				int valueToPut = EntryNumberProvider.getNextValue();
 				e.operation =1;	
-				e.value = Integer.toString(tokenNumber);
-				execute(client,"-set","1",Integer.toString(tokenNumber));
+				e.value = Integer.toString(valueToPut);
+				execute(client,"-set","1",Integer.toString(valueToPut));
 				
 			}
 			else{

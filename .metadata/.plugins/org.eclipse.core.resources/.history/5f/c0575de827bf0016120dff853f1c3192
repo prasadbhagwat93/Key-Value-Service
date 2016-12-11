@@ -1,0 +1,132 @@
+package kvstore;
+import java.util.*;
+import java.io.*;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
+
+import java.lang.*;;
+public class RandomRequestGenerator implements Runnable  {
+	String threadName;
+	
+	KVStore.Client client;
+	
+	Random r = new Random()	;
+	RandomRequestGenerator(String name ){
+		threadName = name;
+		
+		TTransport transport;
+		transport = new TSocket("localhost",9090); //Connecting to port
+	    try {
+			transport.open();
+		} catch (TTransportException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    TProtocol protocol = new  TBinaryProtocol(transport); 
+	    client = new  KVStore.Client(protocol);
+	}
+	
+	@Override
+	public void run() {
+		
+		
+		try {
+			int i =0;
+			while(i<2){
+				helper();
+				i++;
+			}
+		System.out.println("******** " + threadName +" is done");
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void helper() throws IOException{
+		int value = 0;	int tokenNumber;
+		LogEntry e = new LogEntry();
+		Result res = null;
+		 value = SequenceServer.getNext();
+		 e.start = value;
+		 tokenNumber = EntryNumberProvider.getNext();
+		 e.entryNumber = tokenNumber;
+		try {
+			//int a=r.nextInt(2-1+1) + 1;
+		
+			if(threadName.equals("Th1")){
+				e.operation =1;	
+				e.value = Integer.toString(tokenNumber);
+				execute(client,"-set","1",Integer.toString(EntryNumberProvider.getNextValue()));
+				
+			}
+			else{
+				e.operation = 0;
+				Result r = execute(client,"-get","1","");
+				e.value = r.value;
+			}
+		} catch (TException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		value = SequenceServer.getNext();
+		e.end = value;
+		EntryNumberProvider.addToLogList(e);
+		printEntry(e);
+	}
+	
+	public  Result execute(KVStore.Client client,String operation,String key,String value) throws TException{
+		 Result res = null;
+		 switch (operation) { 		//select operation
+		 
+		 case "-set" :
+			//System.out.println("-set: About to exec client.kvset for " + threadName);
+			  res = client.kvset(key,value);
+			return res;
+		case "-get" :
+			 res = client.kvget(key);
+			// System.out.println("-get: Value is "+ res.value + " for " + threadName);
+			 if(res.error.getValue() == 0){
+				// System.out.println("-get: Value is "+ res.value + " for " + threadName);
+				// System.out.println("Exitcode "+res.error.getValue());
+				// System.exit(res.error.getValue());
+			 }
+			 else{
+				// System.err.println(res.errortext);
+				// System.out.println("Exitcode "+res.error.getValue());
+				 //System.exit(res.error.getValue());
+			 }
+			 
+			 return res;
+		 case "-delete" :
+			 res = client.kvdelete("b");
+			 if(res.error.getValue() == 0){
+				 System.out.println("Exitcode "+res.error.getValue());
+				 System.exit(res.error.getValue());
+			 }
+			 else{
+				 System.err.println(res.errortext);
+				 System.out.println("Exitcode "+res.error.getValue());
+				 System.exit(res.error.getValue());
+			 }
+			 return res;
+			 
+		default: 
+			System.out.println("Some error in command");
+			return res;
+		 
+		 }
+		 
+	 }
+	static void printEntry(LogEntry e){
+		   System.out.println("start"+e.start+ " end"+ e.end+" operation"+e.operation + " Token Number "+e.entryNumber + " Value"+e.value);
+	   }
+
+}
