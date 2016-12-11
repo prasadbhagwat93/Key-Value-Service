@@ -18,7 +18,7 @@ public class Kvimplement implements KVStore.Iface{
 	//@SuppressWarnings("null")
 	{
 	try {
-		kvset("1","-1");
+		kvset("1","0");
 	} catch (TException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

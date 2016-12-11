@@ -29,7 +29,13 @@ public class ConsistencyValidator {
 	}
 
 	public static void drawGraph(List<LogEntry> list){
-		
+		Collections.sort(list, new Comparator<LogEntry>(){
+		     public int compare(LogEntry o1, LogEntry o2){
+		         if(o1.entryNumber == o2.entryNumber)
+		             return 0;
+		         return o1.entryNumber < o2.entryNumber ? -1 : 1;
+		     }
+				});
 		for(int i=0; i< list.size();i++){
 			points[i] = new LinkedList<LogEntry>();
 		}

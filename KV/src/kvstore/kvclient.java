@@ -20,6 +20,9 @@ public class kvclient{
 		    r.start();
 		    RandomRequestGenerator r1 = new RandomRequestGenerator("Thread two");
 		    r1.start();*/
+		   // execute("-set","1","0");
+		    
+		    Thread.sleep(1000);
 		    Thread t1 = new Thread( new RandomRequestGenerator("Th1"));
 		    t1.start();
 		    Thread t2 = new Thread( new RandomRequestGenerator("Th2"));
@@ -36,8 +39,8 @@ public class kvclient{
 			 	e.printStackTrace();
 		 }
 	 }
-	 /*
-	 public static void execute(String operation) throws TException{
+	 
+	 public static void execute(String operation,String key,String value) throws TException{
 		 Result res = null;
 		 switch (operation) { 		//select operation
 		 
@@ -79,6 +82,6 @@ public class kvclient{
 		 
 		 }
 		 
-	 }*/
+	 }
 	
 }
